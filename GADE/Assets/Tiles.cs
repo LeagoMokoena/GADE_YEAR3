@@ -7,4 +7,6 @@ public class Tiles
 {
     public string n;
     public GameObject ob;
+
+    public float move = 1;
 }

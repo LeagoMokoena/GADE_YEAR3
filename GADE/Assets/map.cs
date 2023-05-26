@@ -15,6 +15,9 @@ public class map : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        selected.GetComponent<prop>().width = (int)selected.transform.position.x;
+        selected.GetComponent<prop>().height = (int)selected.transform.position.z;
+        selected.GetComponent<prop>().floor = this;
         tiles = new int[width, height];
 
         for(int i = 0; i < width; i++)
@@ -33,14 +36,18 @@ public class map : MonoBehaviour
         build();
     }
 
-    class Node
+    float entering(int widths,int tarwid,int tarhei, int heights)
     {
-        public List<Node> children;
+        Tiles tut = types[tiles[tarwid, tarhei]];
 
-        public Node()
+        float cos = tut.move;
+
+        if(widths!=tarwid && heights != tarhei)
         {
-            children = new List<Node>();
+            cos += 0.001f;
         }
+
+        return cos;
     }
 
     Node[,] nodes;
@@ -57,9 +64,9 @@ public class map : MonoBehaviour
                 if(i < width - 1)
                     nodes[i, j].children.Add(nodes[i + 1, j]); 
                 if(j > 0)
-                    nodes[i, j].children.Add(nodes[i, j-1]); 
+                    nodes[i, j].children.Add(nodes[i-1, j-1]); 
                 if(j < height - 1)
-                    nodes[i, j].children.Add(nodes[i, j + 1]);
+                    nodes[i, j].children.Add(nodes[i+1, j + 1]);
 
 
             }
@@ -83,14 +90,21 @@ public class map : MonoBehaviour
         }
     }
 
+    public Vector3 coord(int wid,int hei)
+    {
+        return new Vector3(wid, 0, hei);
+    }
     public void Move(int wid, int hei)
     {
 
         Dictionary<Node, float> dis = new Dictionary<Node, float>();
         Dictionary<Node, Node> prev = new Dictionary<Node, Node>();
+        
         List<Node> notReached = new List<Node>();
-        Node sour = nodes[selected.GetComponent<prop>().width,
-            selected.GetComponent<prop>().height];
+        Node sour = nodes[selected.GetComponent<prop>().width,selected.GetComponent<prop>().height];
+
+        Node tar = nodes[wid, hei];
+
 
         dis[sour] = 0;
         prev[sour] = null;
@@ -100,7 +114,6 @@ public class map : MonoBehaviour
             if( node != sour) 
             {
                 dis[node] = Mathf.Infinity; prev[node] = null;
-                
             }
 
             notReached.Add( node );
@@ -108,10 +121,42 @@ public class map : MonoBehaviour
 
         while (notReached.Count > 0) 
         {
-            Node q = notReached.OrderBy(n  => dis[n]).First();
-            notReached.Remove( q );
+            Node iu = null;
+
+            foreach ( Node node in notReached )
+            {
+                if(iu == null || dis[node] < dis[iu])
+                {
+                    iu = node;
+                }
+            }
+
+            if(iu == tar)
+            {
+                break;
+            }
+
+            notReached.Remove( iu );
+
+            foreach( Node de in iu.children)
+            {
+                float al = dis[iu] + entering(de.w,iu.w,iu.h,de.h);
+                if(al < dis[de])
+                {
+                    dis[de] = al;
+                    prev[de] = iu;
+                }
+            }
+        }
+
+        if (prev[tar] == null)
+        {
+            return;
         }
         
+        List<Node> cuur = new List<Node>();
+
+        Node one = tar;
     }
     public Vector3 tilecoord(int wid, int hei)
     {
@@ -122,4 +167,6 @@ public class map : MonoBehaviour
     {
         
     }
+
+
 }
