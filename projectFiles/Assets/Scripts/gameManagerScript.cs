@@ -305,7 +305,7 @@ public class gameManagerScript : MonoBehaviour
                 selectedYTile = hit.transform.parent.gameObject.GetComponent<UnitScript>().y;
                 cursorX = selectedXTile;
                 cursorY = selectedYTile;
-                TMS.quadOnMapCursor[selectedXTile, selectedYTile].GetComponent<MeshRenderer>().enabled = true;
+                //TMS.quadOnMapCursor[selectedXTile, selectedYTile].GetComponent<MeshRenderer>().enabled = true;
                 tileBeingDisplayed = hit.transform.parent.gameObject.GetComponent<UnitScript>().tileBeingOccupied;
 
             }
