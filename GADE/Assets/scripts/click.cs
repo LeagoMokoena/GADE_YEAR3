@@ -7,10 +7,9 @@ public class click : MonoBehaviour
     public int width;
     public int height;
     public map tile;
-    public GameObject unitOnTile;
     private void OnMouseUp()
     {
-        tile.Move(width, height);
+        tile.GeneratePathTo(width, height);
     }
     // Start is called before the first frame update
     void Start()

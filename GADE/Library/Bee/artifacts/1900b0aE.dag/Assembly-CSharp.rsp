@@ -351,14 +351,12 @@
 "Assets/scripts/Ai_minimax.cs"
 "Assets/scripts/changeScne.cs"
 "Assets/scripts/click.cs"
-"Assets/scripts/fight.cs"
 "Assets/scripts/hover.cs"
-"Assets/scripts/manager.cs"
 "Assets/scripts/map.cs"
 "Assets/scripts/Node.cs"
-"Assets/scripts/prop.cs"
 "Assets/scripts/prop1.cs"
 "Assets/scripts/Tiles.cs"
+"Assets/scripts/types.cs"
 -langversion:9.0
 
 /deterministic
